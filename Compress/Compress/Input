@@ -1,0 +1,337 @@
+#pragma once  
+
+#include <string>
+#include "HuffmanTree.h"
+
+typedef unsigned long LongType;
+
+struct CharInfo
+{
+	unsigned char		_ch;
+	LongType	_count;
+	string		_code;
+
+	CharInfo(const LongType& count=0 )
+		: _ch(0)
+		, _count(count)
+	{ }
+
+	bool operator <(const CharInfo& ch) const 
+	{
+		return _count < ch._count;
+	}
+
+	CharInfo operator + (const CharInfo& ch)
+	{
+		return CharInfo(_count + ch._count);
+	}
+
+	bool operator != (const CharInfo& ch) const
+	{
+		return _count != ch._count;
+	}
+};
+
+#include <stack>
+#include <vector>
+#include <iterator>
+#include <stdlib.h>
+
+class FileCompress
+{
+	typedef HuffmanTreeNode<CharInfo> Node;
+
+public:
+
+	FileCompress()
+	{
+		for (size_t i = 0; i < 256; ++i)
+		{
+				_info[i]._count = 0;
+		}
+	}
+
+	//void GenerateHuffmanCode(HuffmanTreeNode<CharInfo>*& root, string& code,Node*& prev)
+	//{
+	//	if (NULL == root)
+	//		return;
+
+	//	if (root->_left == NULL && root->_right == NULL)
+	//	{
+	//		cout << root->_weight._ch << " : ";
+	//		for (size_t i = 0; i, i < code.size(); ++i)
+	//		{
+	//			cout << code[i];
+	//		}
+	//		cout << " " << endl;
+
+	//		for (size_t i = 0; i < code.size(); ++i)
+	//		{
+	//			root->_weight._code.push_back(code[i]);
+	//			_info[root->_weight._ch]._code.push_back(code[i]);
+	//		}
+
+	//		return;
+	//	}
+
+	//	prev = root;
+
+	//	if (NULL != root->_left)
+	//	{
+	//		code.push_back('0');
+	//		GenerateHuffmanCode(root->_left, code, prev);
+	//	}
+
+	//	if (NULL != root->_right)
+	//	{
+	//		if (prev != root)
+	//		{
+	//			//当prevNode与curNode不同,将code置空
+	//			while (!code.empty())
+	//			{
+	//				code.pop_back();
+	//			}
+	//		}
+	//		else
+	//		{
+	//			code.pop_back();
+	//		}
+	//		code.push_back('1');
+
+	//		GenerateHuffmanCode(root->_right, code, prev);
+	//	}
+	//}
+
+	void GenerateHuffmanCode(HuffmanTreeNode<CharInfo>* root, string code)
+	{
+		if (NULL == root)
+			return;
+
+		if (root->_left == NULL && root->_right == NULL)
+		{
+			for (size_t i = 0; i < code.size(); ++i)
+			{
+				root->_weight._code.push_back(code[i]);
+				_info[root->_weight._ch]._code.push_back(code[i]);
+			}
+
+			return;
+		}
+
+
+		GenerateHuffmanCode(root->_left, code + '0');
+
+		GenerateHuffmanCode(root->_right, code + '1');
+	}
+
+	void Compress(const char* filename)
+	{
+		FILE * fp = fopen(filename, "rb");
+		assert(fp);
+
+		//统计文件中字符的个数
+		char ch = fgetc(fp);
+		while (ch != EOF)
+		{
+			_info[(unsigned char) ch]._count++;
+			_info[(unsigned char) ch]._ch = ch;
+
+			ch = fgetc(fp);
+		}
+
+		CharInfo invalid;	
+		HuffmanTree<CharInfo> huf(_info, 256, invalid);
+
+		Node* root = huf.GetRoot();
+		Node* prev = NULL;
+		string code;
+		GenerateHuffmanCode(root, code);
+
+		fseek(fp, 0, SEEK_SET); //重新定位读指针在文件头
+
+		string CompressFileName = filename;
+		CompressFileName += ".compress";
+		FILE * fIn = fopen(CompressFileName.c_str(), "wb");
+		assert(fIn);
+
+		int value = 0;
+		int size = 0;
+
+		ch = fgetc(fp);
+
+		while (ch != EOF)
+		{
+			string& code = _info[(unsigned char) ch]._code;
+
+			for (size_t i = 0; i < code.size(); ++i)
+			{
+				value <<= 1;
+				if (code[i]&1)
+				{
+					value |= 1;
+				}
+				++size;
+
+				if (size == 8)
+				{
+					fputc(value, fIn);
+					size = 0;
+					value = 0;
+				}
+			}
+			ch = fgetc(fp);
+		}
+
+		if (size)
+		{
+			value <<= (8 - size);
+			fputc(value, fIn);
+		}
+
+		string ConfigFileName = filename;
+		ConfigFileName += ".config";
+		FILE * fInconfig = fopen(ConfigFileName.c_str(), "w");
+		assert(fInconfig);
+
+		string line;
+		char buf[256];
+
+		for (size_t i = 0; i < 256; ++i)
+		{
+			if (_info[i]._count > 0)
+			{
+				line += i;
+				line += ',';
+				line += _itoa(_info[i]._count,buf,10);
+				line += '\n';
+
+				fputs(line.c_str(), fInconfig);
+				line.clear();
+			}
+		}
+
+		fclose(fInconfig);
+		fclose(fIn);
+		fclose(fp);
+	}
+
+	bool ReadLine(FILE* fp ,string& code)
+	{
+		char ch = fgetc(fp);
+		if (ch == EOF)
+		{
+			return false;
+		}
+
+		while (ch != EOF && ch != '\n')
+		{
+			code += ch;
+			ch = fgetc(fp);
+		}
+
+		return true;
+	}
+
+	void Uncompress(const char* filename)
+	{
+		string CompressFileName = filename;
+		CompressFileName += ".compress";
+		FILE * fOut = fopen(CompressFileName.c_str(), "rb");
+		assert(fOut);
+
+		string UncompressFileName = filename;
+		UncompressFileName += ".uncompress";
+		FILE * fIn = fopen(UncompressFileName.c_str(), "wb");
+		assert(fIn);
+
+		string ConfigFileName = filename;
+		ConfigFileName += ".config";
+		FILE * fInconfig = fopen(ConfigFileName.c_str(), "r");
+		assert(fInconfig);
+
+		string code;
+		while (ReadLine(fInconfig, code))
+		{
+			if (code.empty())
+			{
+				//continue;
+				//ReadLine(fInconfig, code);
+				code += '\n';
+			    char ch = fgetc(fInconfig);
+				while (ch != EOF && ch != '\n')
+				{
+					code += ch;
+					ch = fgetc(fInconfig);
+				}
+			}
+
+			_info[(unsigned char)code[0]]._ch = code[0];
+			_info[(unsigned char)code[0]]._count = atoi(code.substr(2).c_str());
+			code.clear();
+		}
+
+		fclose(fInconfig);
+
+		CharInfo invalid;
+		HuffmanTree<CharInfo> huf(_info, 256, invalid);
+
+		Node* root = huf.GetRoot();
+		Node* cur = root;
+
+		int CharCout = root->_weight._count;
+
+		unsigned char ch = fgetc(fOut);
+		int value = 0;
+		int pos = 7;
+
+		while (ch != EOF)
+		{
+			if (ch & (1 << pos))
+			{
+				cur = cur->_right;
+			}
+			else
+			{
+				cur = cur->_left;
+			}
+			--pos;
+
+			if (cur->_left == NULL && cur->_right == NULL)
+			{
+				fputc(cur->_weight._ch, fIn);
+				--CharCout;
+				cur = root;
+			}
+
+			if (CharCout == 0)
+			{
+				break;
+			}
+
+			if (pos < 0)
+			{
+				ch = fgetc(fOut);
+				pos = 7;
+			}
+		}
+
+		fclose(fIn);
+		fclose(fOut);
+	}
+
+private:
+	CharInfo _info[256];
+};
+
+void CompressTest()
+{
+	FileCompress file;
+	//file.Compress("Input");
+
+	file.Uncompress("Input");
+}
+
+如何去构建 HuffmanTree 
+//没有默认的构造函数
+
+//不是有效值就不要插入到HuffmanTree中，此时CharInfo要重载 != (根据里面的字符判断)刚开始全是'\0'
