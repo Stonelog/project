@@ -1,4 +1,4 @@
-如何去构建 HuffmanTree 
+ 如何去构建 HuffmanTree 
 
 	HuffmanTreeNode结点的构建 : 带权值的结点
 
