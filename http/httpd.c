@@ -157,9 +157,9 @@ void exec(int sock,const char *path,const char *method,const char *query_string)
 		}
 	}
 
-	printf("method :%s\n",method);
-	printf("query string :%s\n",query_string);
-	printf("content_lenght :%d\n",content_length);
+//	printf("method :%s\n",method);
+//	printf("query string :%s\n",query_string);
+//	printf("content_lenght :%d\n",content_length);
 
 	char buf1[_SIZE_] = "HTTP/1.1 200 OK \r\n\r\n";
 	send(sock,buf1,strlen(buf1),0);
@@ -244,7 +244,6 @@ void exec(int sock,const char *path,const char *method,const char *query_string)
 
 		while(read(cgi_output[0],&ch,1) > 0)
 		{
-//			printf("%c",ch);
 			send(sock,&ch,1,0);
 		}
 
@@ -293,6 +292,7 @@ void *request(void *arg)
 		return (void*)1;
 	}
 
+	printf("line : %s \n",buf);
 	int i = 0;
 	int j = 0;
 

@@ -3,55 +3,55 @@
 #include <unistd.h>
 #include <iostream>
 #include <string.h>
-#include "sql_api.h"
+//#include "sql_api.h"
 
 void insert(char *data_string)
 {
-	//printf("data_string %s \n",data_string);
-	
-	sql_api *sql =  new sql_api();
-	//sql_api *sql = sql_api::sql_api_create();
-	
-	sql->my_connect();
-
-	char *buf[4];
-
-	char *end = data_string + strlen(data_string);
-
-	int index = 0;
-
-	while(end != data_string)
-	{
-		if(*end == '=')
-		{
-			buf[index++] = end+1;
-		}
-		if(*end == '&')
-		{
-			*end = '\0';
-		}
-		--end;
-	}
-
-	printf("name :  %s \n",buf[3]);
-	printf("sex :  %s \n",buf[2]);
-	printf("age :  %s \n",buf[1]);
-	printf("school : %s <br/> \n",buf[0]);
-
-	std::string table = "student";
-	std::string filed = "(name,sex,age,school)";
-	
-	std::string values = "(' ";
-	values += buf[3];
-	values += " ' , '";
-	values += buf[2];
-	values += "' ,  ";
-	values += buf[1];
-	values += " , ' ";
-	values += buf[0];
-	values += " ' )";
-
-	sql->my_insert(table,filed,values);
+//	//printf("data_string %s \n",data_string);
+//	
+//	sql_api *sql =  new sql_api();
+//	//sql_api *sql = sql_api::sql_api_create();
+//	
+//	sql->my_connect();
+//
+//	char *buf[4];
+//
+//	char *end = data_string + strlen(data_string);
+//
+//	int index = 0;
+//
+//	while(end != data_string)
+//	{
+//		if(*end == '=')
+//		{
+//			buf[index++] = end+1;
+//		}
+//		if(*end == '&')
+//		{
+//			*end = '\0';
+//		}
+//		--end;
+//	}
+//
+//	printf("name :  %s \n",buf[3]);
+//	printf("sex :  %s \n",buf[2]);
+//	printf("age :  %s \n",buf[1]);
+//	printf("school : %s <br/> \n",buf[0]);
+//
+//	std::string table = "student";
+//	std::string filed = "(name,sex,age,school)";
+//	
+//	std::string values = "(' ";
+//	values += buf[3];
+//	values += " ' , '";
+//	values += buf[2];
+//	values += "' ,  ";
+//	values += buf[1];
+//	values += " , ' ";
+//	values += buf[0];
+//	values += " ' )";
+//
+//	//sql->my_insert(table,filed,values);
 }
 
 int main()

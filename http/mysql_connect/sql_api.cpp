@@ -14,6 +14,7 @@ sql_api::sql_api(const std::string &_host,const std::string &_user,const std::st
 int sql_api::my_connect()
 {
 	mysql_real_connect(conn,host.c_str(),user.c_str(),passwd.c_str(),db.c_str(),port,NULL,0);
+
 	if (!mysql_set_character_set(conn, "utf8"))
 	{
 	    //printf("New client character set: %s\n",mysql_character_set_name(conn));
@@ -79,6 +80,8 @@ int sql_api::my_select(const std::string & table)
 		}
 		std::cout << "<br/>"<< std::endl;
 	}
+
+	mysql_free_result(res);
 }
 
 sql_api::~sql_api()

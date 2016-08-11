@@ -8,14 +8,14 @@ using namespace std;
 
 void select(char *data_string)
 {
-	sql_api *sql =  new sql_api();
-	//sql_api *sql = sql_api::sql_api_create();
-	
-	sql->my_connect();
+	//sql_api *sql =  new sql_api();
+	////sql_api *sql = sql_api::sql_api_create();
+	//
+	//sql->my_connect();
 
-	std::string table = "student";
-	
-	sql->my_select(table);
+	//std::string table = "student";
+	//
+	//sql->my_select(table);
 }
 
 int main()
