@@ -1,6 +1,9 @@
 
 #include "sql_api.h"
 
+sql_api* sql_api::obj = NULL;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
 sql_api::sql_api(const std::string &_host,const std::string &_user,const std::string &_passwd, const std::string & _db,const  int _port)
 	: host(_host)
 	  ,user(_user)
@@ -11,10 +14,30 @@ sql_api::sql_api(const std::string &_host,const std::string &_user,const std::st
 	this->conn = mysql_init(NULL);
 }
 
+sql_api* sql_api::sql_api_create(const std::string &_host,const std::string &_user,const std::string &_passwd, const std::string & _db,const  int _port)
+{
+	if (NULL == obj)
+	{
+		pthread_mutex_lock(&lock);
+
+		if(NULL == obj)
+		{
+			sql_api* tem  = new sql_api(_host,_user,_passwd, _db, _port);
+
+			//MemeoryBarrier()
+
+			obj = tem;
+		}
+
+		pthread_mutex_unlock(&lock);
+	}
+		
+	return obj;
+}
+
 int sql_api::my_connect()
 {
 	mysql_real_connect(conn,host.c_str(),user.c_str(),passwd.c_str(),db.c_str(),port,NULL,0);
-
 	if (!mysql_set_character_set(conn, "utf8"))
 	{
 	    //printf("New client character set: %s\n",mysql_character_set_name(conn));
@@ -23,11 +46,6 @@ int sql_api::my_connect()
 
 int sql_api::my_insert(const std::string &table, const std::string &filed, const std::string &values)
 {
-	//struct character_set set;
-	//set.name="uft8";
-	//mysql_set_character_set(conn, "utf8");
-	//mysql_get_character_set_info(conn,&set);
-
 	std::string sql = "INSERT INTO ";
 	sql += table;
 	sql += " ";
@@ -42,6 +60,7 @@ int sql_api::my_insert(const std::string &table, const std::string &filed, const
 	{
 		std::cout << "INSERT SUCCESS " <<  std::endl;
 	}
+	
 }
 
 int sql_api::my_select(const std::string & table)
@@ -98,7 +117,7 @@ sql_api::~sql_api()
 //	std::string table = "student";
 //	std::string filed = "(name, sex,age,school)";
 //	std::string values = "('小华', '女',23,'q')";
-//	sql->my_insert(table,filed,values);
+////	sql->my_insert(table,filed,values);
 //
 //	sql->my_select(table);
 //

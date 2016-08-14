@@ -28,7 +28,6 @@ SELECT_OBJ=$(SELECT_SRC:.cpp=.o)
 FIND_INCLUDE=-I$(SQL_API_PATH) -I$(ROOT_PATH)/lib/mysql_lib/include  
 FIND_LIB=-L$(ROOT_PATH)/lib/mysql_lib/lib  -lmysqlclient
 
-
 BIN=httpd
 SRC=httpd.c
 CC=gcc
@@ -55,6 +54,7 @@ $(INSERT):$(INSERT_OBJ)
 $(SELECT):$(SELECT_OBJ)
 	@g++ -o $@  $^   $(FIND_LIB)
 	@echo "LINKing  [$^] to [$@]...done "
+
 
 $(DATE):$(DATE_OBJ)
 	@g++ -o $@  $^  
@@ -91,6 +91,7 @@ clean:
 
 .PHONY:output
 output: $(BIN)
+	@rm  -rf *.o
 	@mkdir -p 			output/http
 	@cp -rf conf 		output/http
 	@cp -rf $(BIN) 		output/
