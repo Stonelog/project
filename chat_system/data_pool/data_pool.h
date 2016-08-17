@@ -9,7 +9,7 @@
 class data_pool
 {
 public:
-	data_pool(int  _size = 128);
+	data_pool(const int  _size = 128);
 
 	void data_get(std::string &_out);
 

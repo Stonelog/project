@@ -1,10 +1,5 @@
 #include "udp_client.h"
 
-//udp_client::udp_client()
-//	:ip(_IP_)
-//	 ,port(_PORT_)
-//{ }
-
 udp_client::udp_client(const std::string& _ip , int _port )
 	: ip(_ip)
 	, port(_port)
@@ -35,10 +30,6 @@ ssize_t udp_client::udp_recv(std::string &out)
 	if(	_ret > 0 )
 	{
 		out = buf;
-		
-		//data. unserialize(out);
-
-		//add_flist(out);
 	}
 	else
 	{
@@ -77,7 +68,6 @@ void udp_client::del_flist(std::string &user)
 		if(*_iter == user)
 		{
 			_iter = flist.erase(_iter);
-//			std::cout<< user <<"exit....."<<std::endl;
 		}
 		else
 		{

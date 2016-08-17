@@ -232,7 +232,6 @@ void* draw_input(void* arg)
 
 		if (msg == "quit" || msg == "q")
 		{
-		//	sleep(1);
 			delwin(win_p->header);
 			delwin(win_p->output);
 			delwin(win_p->flist);
@@ -288,29 +287,6 @@ int main(int argc , char *argv[])
 	{
 		return 0;
 	}
-//	while(1)
-//	{
-//		printf("client(send) >: ");
-//		fflush(stdout);
-//
-//		ssize_t _size = read(1, buf , sizeof(buf) - 1);
-//		buf[_size-1] = '\0';
-//	    
-//		std::string msg(buf);
-//		data.set_msg(msg);
-//
-//		std::string out;
-//		data.serialize(out) ;
-//		_client.udp_send(out);
-//
-//		out = " ";
-//		_client.udp_recv(out);
-//		data. unserialize(out) ;
-//		
-//		std::cout << "Server(echo) : " << std::endl;
-//		fflush(stdout);
-//		std::cout << out << std::endl;
-//	}
 	
 	return 0;
 }

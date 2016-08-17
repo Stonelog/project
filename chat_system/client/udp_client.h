@@ -11,7 +11,6 @@ class udp_client
 public :
 
 	udp_client(const std::string& _ip = _IP_, int _port = _PORT_);
-	//udp_client();
 	
 	void init();
 
