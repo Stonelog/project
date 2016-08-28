@@ -55,7 +55,6 @@ $(SELECT):$(SELECT_OBJ)
 	@g++ -o $@  $^   $(FIND_LIB)
 	@echo "LINKing  [$^] to [$@]...done "
 
-
 $(DATE):$(DATE_OBJ)
 	@g++ -o $@  $^  
 	@echo "LINKing  [$^] to [$@]...done "
@@ -99,13 +98,15 @@ output: $(BIN)
 	@mkdir -p 			output/htdoc
 	@mkdir -p 			output/htdoc/cgi
 
-	@cp -rf $(ROOT_PATH)/htdoc/index.html   output/htdoc
-	@cp -rf $(ROOT_PATH)/htdoc/favicon.ico  output/htdoc/favicon.ico
-	@cp -rf $(ROOT_PATH)/math_cgi     		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/insert_cgi    		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/select_cgi    		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/date_cgi    		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/htdoc/images  		output/htdoc/images
+	@cp -rf $(ROOT_PATH)/htdoc/index.html        output/htdoc
+	@cp -rf $(ROOT_PATH)/htdoc/favicon.ico       output/htdoc/favicon.ico
+	@cp -rf $(ROOT_PATH)/math_cgi     		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/insert_cgi    		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/select_cgi    		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/date_cgi    		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/htdoc/images  		     output/htdoc/images
+	@cp -rf $(ROOT_PATH)/conf  				     output/conf
+	@cp -rf $(ROOT_PATH)/plugin/ctl_server.sh  	 output/
 	
 .PHONY:debug
 debug:

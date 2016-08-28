@@ -1,4 +1,3 @@
-
 #include "sql_api.h"
 
 sql_api* sql_api::obj = NULL;
@@ -23,9 +22,7 @@ sql_api* sql_api::sql_api_create(const std::string &_host,const std::string &_us
 		if(NULL == obj)
 		{
 			sql_api* tem  = new sql_api(_host,_user,_passwd, _db, _port);
-
 			//MemeoryBarrier()
-
 			obj = tem;
 		}
 

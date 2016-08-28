@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -11,9 +12,8 @@
 #include <sys/select.h>
 #include <sys/time.h>   
 #include <sys/stat.h>
-#include <sys/sendfile.h>
-#include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/sendfile.h>
 
 #define _SIZE_ 1024
 
@@ -118,7 +118,6 @@ void clear_header(int sock)
 		ret = get_line(sock,buf,sizeof(buf));
 	}while(ret > 0 && strcmp(buf,"\n") != 0);
 }
-
 
 void exec(int sock,const char *path,const char *method,const char *query_string)
 {
