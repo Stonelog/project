@@ -432,6 +432,7 @@ Node* create(char *&prev, char *in1, char *in2)
 	{
 		root->_right = create(++prev,pos+1,in2);
 	}
+
 	return root;
 }
 
