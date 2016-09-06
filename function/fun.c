@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int gcb(int num1, int num2)
 {
@@ -56,37 +57,103 @@ int mcb(int num1, int num2)
 #include <assert.h>
 #define MAX 20
 
-void perm(int *a, int n, int s,int *r, int m)
+void perm(int *a, int size, int s,int *r, int m)
 {
     assert(a&&r);
-	int i = 0;
-	int j = 0;
-	int k = 0;
+	int iBegin = 0;
+	int jBegin = 0;
+	int index = 0;
 	int flag = 0;
-	int b[3] ;
+	int *temp = (int *)malloc(sizeof(int)*m);
 
-	for (i = 0 ; i < n; ++i)
+	for (iBegin = 0 ; iBegin < size; ++iBegin)
 	{
 		flag = 1;
-		r[s] = a[i];
-		j = 0;
-		for (k = 0; k < n; ++k)
+		r[s] = a[iBegin];
+		index = 0;
+		for (jBegin = 0; jBegin < size; ++jBegin)
 		{
-			if(k != i)
+			if(jBegin != iBegin)
 			{
-				b[j++] = a[k];
+				temp[index++] = a[jBegin];
 			}
 		}
-		perm(b,n-1,s+1,r,m);
+		perm(temp,size-1,s+1,r,m);
 	}
 	if(flag == 0)
 	{
-		for (k = 0; k < m; ++k)
+		for (iBegin = 0; iBegin < m; ++iBegin)
 		{
-			printf("%d ",r[k]);
+			printf("%d ",r[iBegin]);
 		}
 		printf("\n");
 	}
+	free(temp);
+	temp = NULL;
+}
+
+void FindK(int *num , int size, int k)
+{
+	assert(num);
+	int *temp = (int *)malloc(sizeof(int)*k);
+
+	int iBegin = 0;
+	int jBegin = 0;
+	int max = 0;
+	int maxIndex = 0;
+
+	for (iBegin = 0; iBegin < k; ++iBegin)
+	{
+		maxIndex = iBegin;
+		max = num[iBegin];
+		for (jBegin = iBegin+1; jBegin < size; ++jBegin)
+		{
+			if(max < num[jBegin])
+			{
+				max = num[jBegin];
+				maxIndex = jBegin;
+			}
+		}
+
+		int tem = num[maxIndex];
+		num[maxIndex] = num[iBegin];
+		num[iBegin] = tem;
+		temp[iBegin] = tem;
+	}
+	for (iBegin = 0; iBegin < k; ++iBegin)
+	{
+		printf("%d ",temp[iBegin]);
+	}
+	printf("\n");
+
+	free(temp);
+	temp = NULL;
+}
+
+void seqSum(int *a, int size)
+{
+	assert(a);
+
+	int iBegin  = 0;
+	int sum = 0;
+	int MaxSum = *a;
+
+	for(iBegin = 0; iBegin < size; ++iBegin)
+	{
+		if(sum > 0)
+		{
+			sum += a[iBegin];
+		}
+		else
+		{
+			sum = a[iBegin];
+		}
+		if(MaxSum < sum)
+		{
+			MaxSum  = sum;
+		}
+	}
+	printf("MaxSum = %d \n",MaxSum);
 }
 
 int factorSum(int a)
@@ -153,10 +220,10 @@ int IsCircleString(const char *str)
 
 int main()
 {
-	int a[3] = {1,3,5};
+	int a[] = {1,3,5,-1};
 	int r[MAX];
 
-    perm(a,3,0,r, 3);
+    perm(a,sizeof(a)/sizeof(int),0,r, sizeof(a)/sizeof(int));
 
 	friendly();
 
@@ -166,6 +233,10 @@ int main()
 	char *str = "abba";
 	printf("%s IsCicleString ? %d \n",str, IsCircleString(str));
 
+	int num[] = { -1, 7, 3 ,1, 99, -2, 100, 66};
+    FindK(num , sizeof(num)/sizeof(num[0]), 3);
+
+    seqSum(a, sizeof(a)/sizeof(a[0]));
 	return 0;
 }
 
