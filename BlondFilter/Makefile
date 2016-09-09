@@ -1,6 +1,8 @@
-Test:Test.cpp
+BlondFilter:BlondFilter.cpp
 	g++ -o $@ $^
+
 .PHONY:clean
 clean:
-	rm -rf Test
+	rm -rf BlondFilter
+
 

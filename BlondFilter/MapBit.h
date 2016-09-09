@@ -64,24 +64,3 @@ private:
 };
 
 
-void BitMapTest()
-{
-	BitMap  bm(100);
-	bm.Set(13);
-	bm.Set(54);
-	bm.Set(64);
-
-	cout << bm.Test(13) << " ";
-	cout << bm.Test(54) << " ";
-	cout << bm.Test(64) << endl;
-
-	bm.ReSet(54);
-	cout << bm.Test(13) << " ";
-	cout << bm.Test(54) << " ";
-	cout << bm.Test(64) << endl;
-
-	cout << bm.Size() << endl;
-}
-
-
-
