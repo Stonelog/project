@@ -11,9 +11,9 @@ class udp_server
 {
 	void add_user(struct sockaddr_in &client);
 	void del_user(struct sockaddr_in &client, std::string &out);
+
 public:
 
-//	udp_server();
 	udp_server(const std::string& _ip=_IP_ , int _port=_PORT_);
 
 	void init();

@@ -8,8 +8,7 @@ using namespace std;
 
 void select(char *data_string)
 {
-	sql_api *sql =  new sql_api();
-	//sql_api *sql = sql_api::sql_api_create();
+	sql_api *sql = sql_api::sql_api_create();
 	
 	sql->my_connect();
 

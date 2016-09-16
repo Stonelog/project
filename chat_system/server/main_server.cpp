@@ -48,15 +48,6 @@ int main(int argc , char* argv[])
 	pthread_join(th1, NULL);
 	pthread_join(th2, NULL);
 
-//	while(1)
-//	{
-//		std::string out;
-//		_ser.udp_recv(out);
-//
-//        std::cout << "client: ";
-//		std::cout << out << std::endl;
-//	}
-//	
 	return 0;
 }
 

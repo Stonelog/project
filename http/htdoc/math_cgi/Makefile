@@ -15,4 +15,4 @@ $(MATH):$(MATH_OBJ)
 
 .PHONY:clean
 clean:
-	rm -f  math_cgi
+	rm -f  math_cgi *.o

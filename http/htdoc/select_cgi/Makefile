@@ -24,6 +24,6 @@ $(SELECT): $(SELECT_OBJ)
 
 .PHONY:clean
 clean:
-	rm -f  select_cgi
+	rm -f  select_cgi *.o
 
 

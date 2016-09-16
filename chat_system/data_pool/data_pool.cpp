@@ -1,7 +1,7 @@
 #include "data_pool.h"
 #include <pthread.h>
 
-data_pool::data_pool(int _size)
+data_pool::data_pool(const int _size)
 	:pool(_size)
 	 ,cap(_size)
 	 ,index_pro(0)

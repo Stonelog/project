@@ -7,10 +7,7 @@
 
 void insert(char *data_string)
 {
-	//printf("data_string %s \n",data_string);
-	
-	sql_api *sql =  new sql_api();
-	//sql_api *sql = sql_api::sql_api_create();
+	sql_api *sql = sql_api::sql_api_create();
 	
 	sql->my_connect();
 

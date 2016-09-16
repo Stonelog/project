@@ -1,0 +1,4 @@
+dict&字典
+hello&你好
+change&改变
+world&世界

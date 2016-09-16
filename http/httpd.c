@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -11,9 +12,8 @@
 #include <sys/select.h>
 #include <sys/time.h>   
 #include <sys/stat.h>
-#include <sys/sendfile.h>
-#include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/sendfile.h>
 
 #define _SIZE_ 1024
 
@@ -119,7 +119,6 @@ void clear_header(int sock)
 	}while(ret > 0 && strcmp(buf,"\n") != 0);
 }
 
-
 void exec(int sock,const char *path,const char *method,const char *query_string)
 {
 	char buf[_SIZE_];
@@ -157,9 +156,9 @@ void exec(int sock,const char *path,const char *method,const char *query_string)
 		}
 	}
 
-	printf("method :%s\n",method);
-	printf("query string :%s\n",query_string);
-	printf("content_lenght :%d\n",content_length);
+//	printf("method :%s\n",method);
+//	printf("query string :%s\n",query_string);
+//	printf("content_lenght :%d\n",content_length);
 
 	char buf1[_SIZE_] = "HTTP/1.1 200 OK \r\n\r\n";
 	send(sock,buf1,strlen(buf1),0);
@@ -244,7 +243,6 @@ void exec(int sock,const char *path,const char *method,const char *query_string)
 
 		while(read(cgi_output[0],&ch,1) > 0)
 		{
-//			printf("%c",ch);
 			send(sock,&ch,1,0);
 		}
 
@@ -293,6 +291,7 @@ void *request(void *arg)
 		return (void*)1;
 	}
 
+	printf("line : %s \n",buf);
 	int i = 0;
 	int j = 0;
 

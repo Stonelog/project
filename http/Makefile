@@ -28,7 +28,6 @@ SELECT_OBJ=$(SELECT_SRC:.cpp=.o)
 FIND_INCLUDE=-I$(SQL_API_PATH) -I$(ROOT_PATH)/lib/mysql_lib/include  
 FIND_LIB=-L$(ROOT_PATH)/lib/mysql_lib/lib  -lmysqlclient
 
-
 BIN=httpd
 SRC=httpd.c
 CC=gcc
@@ -91,6 +90,7 @@ clean:
 
 .PHONY:output
 output: $(BIN)
+	@rm  -rf *.o
 	@mkdir -p 			output/http
 	@cp -rf conf 		output/http
 	@cp -rf $(BIN) 		output/
@@ -98,13 +98,15 @@ output: $(BIN)
 	@mkdir -p 			output/htdoc
 	@mkdir -p 			output/htdoc/cgi
 
-	@cp -rf $(ROOT_PATH)/htdoc/index.html   output/htdoc
-	@cp -rf $(ROOT_PATH)/htdoc/favicon.ico  output/htdoc/favicon.ico
-	@cp -rf $(ROOT_PATH)/math_cgi     		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/insert_cgi    		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/select_cgi    		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/date_cgi    		output/htdoc/cgi
-	@cp -rf $(ROOT_PATH)/htdoc/images  		output/htdoc/images
+	@cp -rf $(ROOT_PATH)/htdoc/index.html        output/htdoc
+	@cp -rf $(ROOT_PATH)/htdoc/favicon.ico       output/htdoc/favicon.ico
+	@cp -rf $(ROOT_PATH)/math_cgi     		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/insert_cgi    		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/select_cgi    		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/date_cgi    		     output/htdoc/cgi
+	@cp -rf $(ROOT_PATH)/htdoc/images  		     output/htdoc/images
+	@cp -rf $(ROOT_PATH)/conf  				     output/conf
+	@cp -rf $(ROOT_PATH)/plugin/ctl_server.sh  	 output/
 	
 .PHONY:debug
 debug:

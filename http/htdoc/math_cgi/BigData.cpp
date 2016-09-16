@@ -99,7 +99,7 @@ BigData BigData::operator + (const BigData& bigdata)
 		{
 			return BigData(_value + bigdata._value);
 		}
-		else
+		else   // equeal symbol
 		{
 			if ((_pData[0] == '+' && (LLONG_MAX - _value >= bigdata._value)) ||
 				(_pData[0] == '-' && (LLONG_MIN - _value <= bigdata._value)))
@@ -111,7 +111,7 @@ BigData BigData::operator + (const BigData& bigdata)
 
 	if (_pData[0] == bigdata._pData[0])
 	{
-		return BigData( (char *) Add(_pData, bigdata._pData).c_str() );
+		return BigData( (char *) Add(_pData, bigdata._pData).c_str());
 	}
 
 	return BigData((char *)Sub(_pData, bigdata._pData).c_str());
@@ -259,8 +259,10 @@ string  BigData::Mul(const string& mLeft, const string& mRight)
 
 	int Datalen = strRet.size();
 	
-	//111111111111111111111111111111111
 	//000000000000000000000000000000222
+	//111111111111111111111111111111111
+
+	//222222222222222222222222222222222
 
 	char cStep = 0;
 	char offSet = 0;
@@ -463,8 +465,7 @@ ostream& operator << (ostream& _cout, const BigData& bigdata)
 
 	 //"-9223372036854775808"
 	 //"-9223372036854775809"
-	 if ((_pData[0] == '+' && Max < _pData) ||
-		 (_pData[0] == '-' && Min < _pData) )  
+	 if ((_pData[0] == '+' && Max < _pData) ||(_pData[0] == '-' && Min < _pData) )  
 	 {
 		 return true;
 	 }
@@ -477,8 +478,7 @@ ostream& operator << (ostream& _cout, const BigData& bigdata)
 	 assert(Left);
 	 assert(Right);
 
-	 if ((LSize > RSize) ||
-		 (LSize == RSize) && strncmp(Left, Right, LSize) >=  0)
+	 if ((LSize > RSize) ||(LSize == RSize && strncmp(Left, Right, LSize) >= 0 ))
 	 {
 		 return true;
 	 }
@@ -536,5 +536,12 @@ ostream& operator << (ostream& _cout, const BigData& bigdata)
 	 return iCount;
  }
 
-
+//int main()
+//{
+//	BigData d1("1111111111111111111");
+//	BigData d2("22");
+//
+//	std::cout << d1*d2 << std::endl;
+//
+//}
 

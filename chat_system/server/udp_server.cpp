@@ -1,11 +1,6 @@
 #include "udp_server.h"
 #include "udp_data.h"
 
-//udp_server::udp_server()
-//	:ip(_IP_)
-//	 ,port(_PORT_)
-//{ }
-
 udp_server::udp_server(const std::string& _ip , int _port)
 	:ip(_ip)
 	 ,port(_port)
@@ -105,11 +100,11 @@ ssize_t  udp_server::udp_send(std::string &in ,struct sockaddr_in &cli , socklen
 void udp_server::broadcast()
 {
 	std::map<std::string, struct sockaddr_in>::iterator vectIter = online_user.begin();
+	std::string msg;
+	pool.data_get(msg);
 
 	for( ; vectIter != online_user.end(); ++vectIter)
 	{
-		std::string msg;
-		pool.data_get(msg);
 		udp_send(msg ,vectIter->second, sizeof(vectIter->second));
 	}
 }
