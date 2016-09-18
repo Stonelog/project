@@ -20,7 +20,7 @@
 
 #define INITSIZE  100
 int length = 4;			//通讯录中已有4人
-int size = 0;				//当前能存放多少人
+int size = 0;			//当前能存放多少人
 
 typedef struct addr_book
 {
