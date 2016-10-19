@@ -6,7 +6,7 @@ using namespace std;
 
 class CTDate
 {
-	friend ostream& operator <<(ostream &_cout,const CTDate &d);
+	friend ostream& operator <<(ostream &_cout, const CTDate &d);
 	friend istream& operator >>(istream &_cin, CTDate &d);
 
 public:
@@ -48,16 +48,16 @@ public:
 	{
 		if (m_day == 1)
 		{
-			if ( m_month == 1 || m_month == 4 ||
-				 m_month == 5 || m_month == 6 || 
-				 m_month == 7 || m_month == 8 || m_month == 10 )
+			if (m_month == 1 || m_month == 4 ||
+				m_month == 5 || m_month == 6 ||
+				m_month == 7 || m_month == 8 || m_month == 10)
 				return 1;
 		}
 		if ((m_month == 3 && m_day == 12) ||
 			(m_month == 2 && m_day == 14) ||
-			(m_month == 5 && m_day == 4)  ||
+			(m_month == 5 && m_day == 4) ||
 			(m_month == 9 && m_day == 10) ||
-			(m_month == 12 && m_day == 25) )
+			(m_month == 12 && m_day == 25))
 		{
 			return 1;
 		}
@@ -77,11 +77,11 @@ public:
 	CTDate& operator=(const CTDate &d);
 
 	CTDate& operator++(); //前置	
-	
+
 	CTDate operator++(int);//后置
-	
+
 	CTDate& operator--(); //前置
-	
+
 	CTDate operator--(int); //后置
 
 	bool operator > (const CTDate &d);
@@ -89,6 +89,10 @@ public:
 	bool operator == (const CTDate &d);
 
 	bool operator <(const CTDate &d);
+
+	int GetYear() { return m_year; };
+	int GetMonth() { return m_month;  };
+	int GetDay() {  return m_day; };
 
 private:
 

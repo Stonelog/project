@@ -11,7 +11,7 @@ CTDate CTDate::operator+(int d)
 
 	temp.m_day += d;
 
-	while (temp.m_day >  DaysInMonth(temp.m_year,temp.m_month ))
+	while (temp.m_day >  DaysInMonth(temp.m_year, temp.m_month))
 	{
 		temp.m_day -= DaysInMonth(temp.m_year, temp.m_month);
 
@@ -158,6 +158,7 @@ istream& operator >>(istream &_cin, CTDate &d)
 	return _cin;
 }
 
+//ÏòÆÁÄ»´òÓ¡¸ÃÄê£¬¾ßÌåÔÂµÄÔÂ·İ
 void CTDate::Print(int year, int month)
 {
 	cout << "--------The calender of " << year << '/' << month << "------" << endl;
@@ -165,10 +166,11 @@ void CTDate::Print(int year, int month)
 	CTDate MonthBeginDay(year, month, 1);
 	CTDate NewYearDay(year, 1, 1);
 
-	cout << setw(4) << "SUN" << setw(4) << "MON" << 
-		    setw(4) << "TUE" << setw(4) << "WED" <<
-			setw(4) << "THU" << setw(4) << "FRI" <<
-			setw(4) << "SAT"   << endl;
+	cout << setw(4) << "SUN" << setw(4) << "MON"
+		 << setw(4) << "TUE" << setw(4) << "WED" 
+		 << setw(4) << "THU" << setw(4) << "FRI" 
+		 << setw(4) << "SAT" << endl;
+	//¼ÆËãÈÎºÎÒ»ÌìÎªĞÇÆÚ¼¸µÄ¹«Ê½: S=X+(X/4)-(X/100)+(X/400)+C;   X--¹«ÔªÊı-1£»C--¸ÃÄêÔªµ©µ½¸ÃÈÕµÄÌìÊı
 	int blank = 0;
 	int iBegin = 0;
 	int S = 0;
@@ -177,7 +179,7 @@ void CTDate::Print(int year, int month)
 	int C = (MonthBeginDay - NewYearDay) + 1;
 	S = X + X / 4 - X / 100 + X / 400 + C;
 
-	blank = S % 7;  //year-month-1¸
+	blank = S % 7;  //year-month-1ÎªĞÇÆÚ¼¸
 	for (iBegin = 0; iBegin < blank; iBegin++)
 	{
 		cout.width(4);
@@ -187,7 +189,7 @@ void CTDate::Print(int year, int month)
 	{
 		if (S % 7 == 6)
 		{
-			cout << setw(2) << resetiosflags(ios::right) << setw(4) << iBegin  << endl; 
+			cout << setw(2) << resetiosflags(ios::right) << setw(4) << iBegin << endl;  //ÓÒ¶ÔÆë
 		}
 		else
 		{
@@ -195,18 +197,18 @@ void CTDate::Print(int year, int month)
 		}
 		++S;
 	}
-	cout << endl;
-	cout << "-------------------------------------" << endl;
+	cout <<endl<< "-------------------------------------" << endl;
 }
 
-void CTDate::PrintYear(int y)  
+//ÏòÆÁÄ»´òÓ¡¸ÃÄêµÄÔÂ·İ
+void CTDate::PrintYear(int y)
 {
-	for (int month = 1; month < 13; month++) 
+	cout << endl << "--------The calender of " << y << "--------" << endl<<endl;
+	for (int month = 1; month < 13; month++)
 	{
-		cout << "             " <<month << " month"<<"                      " << endl;
+		cout << "             " << month << "ÔÂ" << "                      " << endl;
+		//ÏòÆÁÄ»´òÓ¡¸ÃÄê£¬¾ßÌåÔÂµÄÔÂ·İ(yÄêmonthÔÂ)
 		Print(y, month);
 		cout << endl;
 	}
 }
-
-
